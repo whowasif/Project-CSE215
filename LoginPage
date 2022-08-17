@@ -6,13 +6,18 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
+import Homepage.Home;
+
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JLabel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class LoginPage {
+public class LoginPage extends JFrame {
 
-	private JFrame frame;
+	public JFrame frame;
 
 	/**
 	 * Launch the application.
@@ -70,6 +75,13 @@ public class LoginPage {
 		panel_2.setLayout(null);
 		
 		JButton btnNewButton_1_2_1 = new JButton("←Go Back");
+		btnNewButton_1_2_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				Home h = new Home();
+				h.frame.setVisible(true);
+			}
+		});
 		btnNewButton_1_2_1.setFont(new Font("Bookman Old Style", Font.BOLD, 11));
 		btnNewButton_1_2_1.setBorderPainted(false);
 		btnNewButton_1_2_1.setBackground(Color.LIGHT_GRAY);
@@ -104,14 +116,35 @@ public class LoginPage {
 		panel.add(lblNewLabel_1_1_1);
 		
 		JButton btnNewButton = new JButton("Student");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				StudentLogin sl = new StudentLogin();
+				sl.frame.setVisible(true);
+			}
+		});
 		btnNewButton.setBounds(330, 178, 126, 21);
 		panel.add(btnNewButton);
 		
 		JButton btnFaculty = new JButton("Faculty");
+		btnFaculty.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				FacultyLogin fl = new FacultyLogin();
+				fl.frame.setVisible(true);
+			}
+		});
 		btnFaculty.setBounds(330, 220, 126, 21);
 		panel.add(btnFaculty);
 		
 		JButton btnAdmin = new JButton("Admin");
+		btnAdmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				AdminLogin al = new AdminLogin();
+				al.frame.setVisible(true);
+			}
+		});
 		btnAdmin.setBounds(330, 263, 126, 21);
 		panel.add(btnAdmin);
 	}
