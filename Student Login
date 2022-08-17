@@ -6,15 +6,20 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
+import Homepage.Home;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class StudentLogin {
 
-	private JFrame frame;
+	public JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
 
@@ -74,6 +79,14 @@ public class StudentLogin {
 		panel_2.setLayout(null);
 		
 		JButton btnNewButton_1_2_1 = new JButton("←Go Back");
+		btnNewButton_1_2_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				LoginPage lp = new LoginPage();
+				lp.frame.setVisible(true);
+				
+			}
+		});
 		btnNewButton_1_2_1.setFont(new Font("Bookman Old Style", Font.BOLD, 11));
 		btnNewButton_1_2_1.setBorderPainted(false);
 		btnNewButton_1_2_1.setBackground(Color.LIGHT_GRAY);
@@ -113,3 +126,4 @@ public class StudentLogin {
 	}
 
 }
+
