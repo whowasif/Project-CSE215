@@ -9,13 +9,26 @@ import javax.swing.border.LineBorder;
 
 import AdminCourse.CourseModify;
 import AdminStudent.StudentModify;
+import Adminfaculty.Faculty;
+import Adminfaculty.FacultyCollection;
 import Adminfaculty.FacultyModify;
 import Login.AdminLogin;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -27,7 +40,13 @@ public class AdminSettings extends JFrame {
 	public JFrame frame;
 	private JPasswordField passwordField;
 	private JPasswordField passwordField_1;
-
+	
+	private Faculty faculty = null;
+	private FacultyCollection facultyCollection = new FacultyCollection();
+	
+	boolean del = false;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -182,6 +201,19 @@ public class AdminSettings extends JFrame {
 		panel.add(lblNewPassword);
 		
 		JButton btnNewButton_1_2_1_1 = new JButton("Save");
+		btnNewButton_1_2_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			String oldpass = passwordField.getText();
+			String newpass = passwordField_1.getText();
+			
+			checkpass(oldpass,newpass);
+			passwordField.setText(null);
+			passwordField_1.setText(null);
+			
+			}
+			
+			
+		});
 		btnNewButton_1_2_1_1.setFont(new Font("Bookman Old Style", Font.BOLD, 11));
 		btnNewButton_1_2_1_1.setBorderPainted(false);
 		btnNewButton_1_2_1_1.setBackground(Color.LIGHT_GRAY);
@@ -190,5 +222,159 @@ public class AdminSettings extends JFrame {
 		/*
 		JScrollPane jsp = new JScrollPane(panel_1,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		frame.add(jsp);*/
+	}
+
+	public static void checkpass(String oldpass, String newpass) {
+		// TODO Auto-generated method stub
+		
+		Faculty faculty = null;
+		FacultyCollection facultyCollection = new FacultyCollection();
+		boolean found =false;
+		String line = null,line1 = null;
+		File file = new File("src/Admdetails.txt");
+		String[] word = null;
+		
+		Scanner sc;
+		try {
+			sc = new Scanner(file);
+			 while (sc.hasNext()) {
+			        line = sc.nextLine();
+			        word = line.split("  ");
+			        
+			        String name = word[0];
+			        String id = word[1];
+			        String email = word[2];
+			        String phn = word[3];
+			        String gender = word[4];
+			        String pass = word[5];
+			        
+			        if (line.contains(oldpass)) {
+			        	//textArea.setText(line);
+			        	
+			        	
+			        	found = true;
+			        
+			 
+			 break;
+        }
+        
+    }
+ if(!found)
+ {
+	 JOptionPane.showMessageDialog(null, "Try Again." ,"Not Found!!" , JOptionPane.CLOSED_OPTION);
+ }
+
+//adminCollection.printAdminCollection();
+} catch (FileNotFoundException e1) {
+// TODO Auto-generated catch block
+e1.printStackTrace();
+}
+		try {
+			File file1 = new File("src/AdminIdPass.txt");
+			Scanner sc1 = new Scanner(file1);
+			
+			while(sc1.hasNext()) {
+		        line1 = sc1.nextLine();	
+		        if(line1.contains(oldpass))
+		        {
+		        	break;
+		        }
+			}
+			
+			
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		writepass(line,line1,word,newpass);
+		
+	}
+
+	private static void writepass(String line, String line1, String[] word, String newpass) {
+		// TODO Auto-generated method stub
+		
+
+        String name = word[0];
+        String id = word[1];
+        String email = word[2];
+        String phn = word[3];
+        String gender = word[4];
+        String pass = newpass;
+        
+        try {
+			removeLine(line);
+			removeLine1(line1);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+        
+       
+        File file = new File("src/Admdetails.txt");
+		try {
+			FileWriter fw = new FileWriter(file,true);
+			
+			
+			fw.write(name);
+			fw.write("  ");
+			fw.write(id);
+			fw.write("  ");
+			fw.write(email);
+			fw.write("  ");
+			fw.write(phn);
+			fw.write("  ");
+			fw.write(gender);
+			fw.write("  ");
+			fw.write(pass);
+			fw.write("\n");
+			fw.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+        
+        
+        
+        
+        File file1 = new File("src/AdminIdPass.txt");
+		try {
+			FileWriter fw1 = new FileWriter(file1,true);
+			
+			fw1.write(id);
+			fw1.write("  ");
+			fw1.write(pass);
+			fw1.write("\n");
+			fw1.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		 JOptionPane.showMessageDialog(null, "Password Changed." ,"Successfull!!" , JOptionPane.CLOSED_OPTION);
+		
+		 
+		 
+		
+	}
+	public static void removeLine(String lineContent) throws IOException
+	{
+	    File file = new File("src/Admdetails.txt");
+	    List<String> out = Files.lines(file.toPath())
+	                        .filter(line -> !line.contains(lineContent))
+	                        .collect(Collectors.toList());
+	    Files.write(file.toPath(), out, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+	   
+	}
+	public static void removeLine1(String lineContent) throws IOException
+	{
+	    File file = new File("src/AdminIdPass.txt");
+	    List<String> out = Files.lines(file.toPath())
+	                        .filter(line -> !line.contains(lineContent))
+	                        .collect(Collectors.toList());
+	    Files.write(file.toPath(), out, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+	    
+	    
 	}
 }
